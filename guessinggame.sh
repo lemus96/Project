@@ -2,21 +2,29 @@
 function compare {
 	if [[ $1 -gt $2 ]]
 	then
-		echo "Your guess is higher than the actual value."
+		echo ""
+		echo "Your guess is higher than the actual value. Try again."
 	else
-		echo "Your guess is lower than the actual value."
+		echo ""
+		echo "Your guess is lower than the actual value. Try again."
 	fi
 }
 
-num_files=$(ls -a | wc -l )
-echo "How many files are in your current directory? "
-read value
-
+num_files=$(ls -A | wc -l )
+value=0
 while [[ $num_files -ne $value ]]
 do
-	compare $value $num_files
-	echo "Please try again..."
-	read value
+	echo "How many files are in your current directory? "
+	read entry
+	if [[ $entry =~ ^[0-9]+$ ]] && [[ $entry -ne 0 ]]
+	then
+		let value=$entry
+		compare $value $num_files
+	else
+		echo ""
+		echo "Invalid input. Please try again."
+	fi
+
 done
 
 echo "Congratulaions! You have guessed the number of files in your current directory."
